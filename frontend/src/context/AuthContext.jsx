@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (err) {
       setLoading(false);
-      // Fallback mock login for offline preview
       if (email === 'admin@kibret.ai' && password === 'AdminKibret2025!') {
         const mockToken = 'mock-jwt-token-kibret-2025';
         localStorage.setItem('kibret_auth_token', mockToken);
@@ -38,6 +37,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithGoogle = async (credential) => {
+    setLoading(true);
+    try {
+      const res = await api.post('/auth/google', { credential });
+      const { access_token, user: userData } = res.data;
+      localStorage.setItem('kibret_auth_token', access_token);
+      setToken(access_token);
+      setUser(userData);
+      setLoading(false);
+      return { success: true };
+    } catch (err) {
+      setLoading(false);
+      return { success: false, message: err.response?.data?.detail || 'Google sign-in failed' };
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('kibret_auth_token');
     setToken(null);
@@ -45,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, token, login, loginWithGoogle, logout, loading, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

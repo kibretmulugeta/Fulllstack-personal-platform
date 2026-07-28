@@ -13,6 +13,9 @@ class UserLogin(BaseModel):
     email: str
     password: str
 
+class GoogleLoginRequest(BaseModel):
+    credential: str  # Google ID Token
+
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"

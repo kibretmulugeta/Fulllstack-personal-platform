@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     ADMIN_EMAIL: str = os.getenv("ADMIN_EMAIL", "admin@kibret.ai")
     ADMIN_PASSWORD: str = os.getenv("ADMIN_PASSWORD", "AdminKibret2025!")
     
+    GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
+    
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 
